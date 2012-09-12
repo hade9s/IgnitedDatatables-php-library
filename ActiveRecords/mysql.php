@@ -220,6 +220,15 @@
     }
 
     /**
+    * Escape
+    *
+    */
+    public function escape_db($text = "")
+    {
+      return mysql_real_escape_string($text);
+    }
+
+    /**
     * Compile sql string
     *
     */

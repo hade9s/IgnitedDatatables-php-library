@@ -5,7 +5,7 @@ $datatables = new Datatables();  // for mysqli  =>  $datatables = new Datatables
 // MYSQL configuration
 $config = array(
 'username' => 'root',
-'password' => '',
+'password' => 'root',
 'database' => 'sakila',
 'hostname' => 'localhost');
 

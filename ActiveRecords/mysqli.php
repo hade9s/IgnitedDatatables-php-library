@@ -209,6 +209,15 @@
     }
 
     /**
+    * Escape
+    *
+    */
+    public function escape_db($text = "")
+    {
+      return mysqli_real_escape_string($this->db, $text) ;
+    }
+
+    /**
     * Compile sql string
     *
     */

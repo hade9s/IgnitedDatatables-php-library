@@ -59,9 +59,9 @@
     protected function input($field, $escape = TRUE)
     {
       if(isset($_POST['sEcho']) && isset($_POST[$field]))
-        return ($escape == TRUE)? mysql_real_escape_string($_POST[$field]) : $_POST[$field];
+        return ($escape == TRUE)? $this->ar->escape_db($_POST[$field]) : $_POST[$field];
       elseif(isset($_GET['sEcho']) && isset($_GET[$field]))
-        return ($escape == TRUE)? mysql_real_escape_string($_GET[$field]) : $_GET[$field];
+        return ($escape == TRUE)? $this->ar->escape_db($_GET[$field]) : $_GET[$field];
       else
         return FALSE;
     }

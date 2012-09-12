@@ -7,11 +7,11 @@
 <style type="text/css" title="currentStyle">
 @import "http://jquery-datatables-column-filter.googlecode.com/svn-history/r17/trunk/media/css/demo_page.css";
 @import "http://jquery-datatables-column-filter.googlecode.com/svn-history/r17/trunk/media/css/demo_table.css";
-@import "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/base/jquery-ui.css";
+@import "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/themes/base/jquery-ui.css";
 
 </style>
 <script type="text/javascript" language="javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js" type="text/javascript"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js" type="text/javascript"></script>
 <script type="text/javascript" language="javascript" src="http://datatables.net/release-datatables/media/js/jquery.dataTables.js"></script>
 
 <script type="text/javascript" charset="utf-8">
