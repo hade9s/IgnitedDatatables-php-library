@@ -6,14 +6,25 @@ Ignited Datatables is a wrapper class/library for Datatables (table plug-in for 
 
 Standalone Php Library:
 Fork   : https://github.com/n1crack/IgnitedDatatables-native-php-version
-Discuss: http://datatables.net/forums/discussion/5133/ignited-datatables-native-php-version
+Discuss: http://datatables.net/forums/discussion/5133/ignited-datatables-php-library
 
-Codeigniter Library :
+Codeigniter Library:
 Fork   : https://github.com/IgnitedDatatables/Ignited-Datatables
-Discuss: http://codeigniter.com/forums/viewthread/160896/
+Discuss: http://ellislab.com/forums/viewthread/160896/
 
 Contact: Vincent Bambico <metal.conspiracy@gmail.com>
          Yusuf Ozdemir <yusuf@ozdemir.be>
+
+Features:
+1. Easy to use. Generates json using only a few lines of code.
+2. Support for table joins (left, right, outer, inner, left outer, right outer).
+3. Able to define custom columns, and filters.
+4. Editable custom variables with callback function support.
+5. Supports generation of tables using non utf-8 charsets.
+6. mDataprop support!
+7. Auto detects HTTP method (POST or GET) //only native php version
+
+You can download the db (sakila) for examples from: http://dev.mysql.com/doc/index-other.html
 
 ============
 Requirements
