@@ -1,37 +1,38 @@
 <?php
   /**
-  * Ignited Datatables
+  * Ignited Datatables Php Library
   *
-  * This is a wrapper class/library for Datatables (table plug-in for Jquery)
+  * This is a php class/library for Datatables(table plug-in for Jquery)
   *
-  * @version    0.6 ( Standalone Php Library )
+  * @version    0.7a ( Php Library )
   * @author     Vincent Bambico <metal.conspiracy@gmail.com>
   *             Yusuf Ozdemir <yusuf@ozdemir.be>
   *
-  * Standalone Php Library:
+  * Php Library:
   * @Fork     : https://github.com/n1crack/IgnitedDatatables-native-php-version
-  * @Discuss  : http://datatables.net/forums/discussion/5133/ignited-datatables-native-php-version
+  * @Discuss  : http://www.datatables.net/forums/discussion/5133/ignited-datatables-php-library
   * 
   * Codeigniter Library:
   * @Fork     : https://github.com/IgnitedDatatables/Ignited-Datatables
-  * @Discuss  : http://codeigniter.com/forums/viewthread/160896/
+  * @Discuss  : http://ellislab.com/forums/viewthread/160896/
   * 
   */
+
   class Datatables
   {
     /**
     * Global container variables for chained argument results
     *
     */
-    var $table;
-    var $select         = array();
-    var $columns        = array();
-    var $joins          = array();
-    var $where          = array();
-    var $filter         = array();
-    var $add_columns    = array();
-    var $edit_columns   = array();
-    var $unset_columns  = array();
+    private $table;
+    private $select         = array();
+    private $joins          = array();
+    private $columns        = array();
+    private $where          = array();
+    private $filter         = array();
+    private $add_columns    = array();
+    private $edit_columns   = array();
+    private $unset_columns  = array();
 
     /**
     * Load ActiveRecord functions
@@ -56,7 +57,7 @@
     * Get input data (post or get)
     *
     */
-    protected function input($field, $escape = TRUE)
+    private function input($field, $escape = TRUE)
     {
       if(isset($_POST['sEcho']) && isset($_POST[$field]))
         return ($escape == TRUE)? $this->ar->escape_db($_POST[$field]) : $_POST[$field];
@@ -77,7 +78,7 @@
     {
       foreach($this->explode(',', $columns) as $val)
       {
-        $column = trim(preg_replace('/(.*)\s+as\s+(\w*)/i', '$2', $val)); 
+        $column = trim(preg_replace('/(.*)\s+as\s+(\w*)/i', '$2', $val));
         $this->columns[] =  $column;
         $this->select[$column] =  trim(preg_replace('/(.*)\s+as\s+(\w*)/i', '$1', $val));
       }
@@ -123,8 +124,23 @@
     */
     public function where($key_condition, $val = NULL, $backtick_protect = TRUE)
     {
-      $this->where[] = array($key_condition, $val, $backtick_protect);
+      $this->where['where'] = array($key_condition, $val, $backtick_protect);
       $this->ar->where($key_condition, $val, $backtick_protect);
+      return $this;
+    }
+
+    /**
+    * Adds LIKE portion to the query
+    *
+    * @param mixed $key_condition
+    * @param string $val
+    * @param bool $backtick_protect
+    * @return mixed
+    */
+    public function like($key_condition, $val = NULL, $backtick_protect = TRUE)
+    {
+      $this->where['like'] = array($key_condition, $val, $backtick_protect);
+      $this->ar->like($key_condition, $val, $backtick_protect);
       return $this;
     }
 
@@ -202,7 +218,7 @@
     *
     * @return mixed
     */
-    protected function get_paging()
+    private function get_paging()
     {
       $iStart = $this->input('iDisplayStart');
       $iLength = $this->input('iDisplayLength');
@@ -214,7 +230,7 @@
     *
     * @return mixed
     */
-    protected function get_ordering()
+    private function get_ordering()
     {
       if ($this->check_mDataprop())
         $mColArray = $this->get_mDataprop();
@@ -236,7 +252,7 @@
     *
     * @return mixed
     */
-    protected function get_filtering()
+    private function get_filtering()
     {
       if ($this->check_mDataprop())
         $mColArray = $this->get_mDataprop();
@@ -285,7 +301,7 @@
     *
     * @return mixed
     */
-    protected function get_display_result()
+    private function get_display_result()
     {
       return $this->ar->get();
     }
@@ -296,7 +312,7 @@
     * @param string charset
     * @return string
     */
-    protected function produce_output($charset)
+    private function produce_output($charset)
     {
       $aaData = array();
       $rResult = $this->get_display_result();
@@ -346,7 +362,7 @@
     *
     * @return integer
     */
-    protected function get_total_results($filtering = FALSE)
+    private function get_total_results($filtering = FALSE)
     {
       if($filtering)
         $this->get_filtering();
@@ -354,8 +370,8 @@
       foreach($this->joins as $val)
         $this->ar->join($val[0], $val[1], $val[2]);
 
-      foreach($this->where as $val)
-        $this->ar->where($val[0], $val[1], $val[2]);
+      foreach($this->where as $key => $val)
+        $this->ar->$key($val[0], $val[1], $val[2]);
 
       return $this->ar->count_all_results($this->table);
     }
@@ -367,7 +383,7 @@
     * @param mixed $row_data
     * @return string $custom_val['content']
     */
-    protected function exec_replace($custom_val, $row_data)
+    private function exec_replace($custom_val, $row_data)
     {
       $replace_string = '';
 
@@ -406,7 +422,7 @@
     *
     * @return bool
     */
-    protected function check_mDataprop()
+    private function check_mDataprop()
     {
       if ($this->input('mDataProp_0') === false) return FALSE;
 
@@ -422,7 +438,7 @@
     *
     * @return mixed
     */
-    protected function get_mDataprop()
+    private function get_mDataprop()
     {
       $mDataProp = array();
 
@@ -440,7 +456,7 @@
     * @param string $close
     * @return string $retval
     */
-    protected function balanceChars($str, $open, $close)
+    private function balanceChars($str, $open, $close)
     {
       $openCount = substr_count($str, $open);
       $closeCount = substr_count($str, $close);
@@ -457,7 +473,7 @@
     * @param string $close
     * @return mixed $retval
     */
-    protected function explode($delimiter, $str, $open='(', $close=')') 
+    private function explode($delimiter, $str, $open='(', $close=')') 
     {
       $retval = array();
       $hold = array();
@@ -487,7 +503,7 @@
     * @param mixed result
     * @return string
     */
-    protected function jsonify($result = FALSE)
+    private function jsonify($result = FALSE)
     {
       if(is_null($result)) return 'null';
       if($result === FALSE) return 'false';

@@ -4,7 +4,7 @@
   *
   * @subpackage libraries
   * @category   library
-  * @version    0.1
+  * @version    0.1a
   * @author     Yusuf Ozdemir <yusuf@ozdemir.be>
   */
   class ActiveRecords     
@@ -17,6 +17,7 @@
     var $ar_from        = array();
     var $ar_join        = array();
     var $ar_where       = array();
+    var $ar_like        = array();
     var $ar_orderby     = array();
     var $ar_limit       = FALSE;
     var $ar_offset      = FALSE;
@@ -122,6 +123,48 @@
         $this->ar_where[] = $prefix . (($escape == TRUE)? $this->_protect_identifiers($k.$v) : $k.$v);
       }
       return $this;  
+    }
+
+    /**
+    * Generates the LIKE portion of the query
+    *
+    */
+    public function like($key, $match = '', $type = 'AND ', $side = 'both', $not = '')
+    {
+      if ( ! is_array($key))
+      {
+        $key = array($key => $match);
+      }
+
+      foreach ($key as $k => $v)
+      {
+        $k = $this->_protect_identifiers($k);
+
+        $prefix = (count($this->ar_like) == 0) ? '' : $type;
+
+        $v = $this->escape_db($v);
+        
+        if ($side == 'none')
+        {
+          $like_statement = $prefix." $k $not LIKE '{$v}'";
+        }
+        elseif ($side == 'before')
+        {
+          $like_statement = $prefix." $k $not LIKE '%{$v}'";
+        }
+        elseif ($side == 'after')
+        {
+          $like_statement = $prefix." $k $not LIKE '{$v}%'";
+        }
+        else
+        {
+          $like_statement = $prefix." $k $not LIKE '%{$v}%' ";
+        }
+
+        $this->ar_like[] = $like_statement;
+
+      }
+      return $this;
     }
 
     /**
@@ -232,9 +275,20 @@
       if (count($this->ar_join) > 0)
         $sql .= "\n".implode("\n", $this->ar_join);
 
-      if (count($this->ar_where) > 0)
-        $sql .= "\nWHERE " . implode("\n", $this->ar_where);
+      if (count($this->ar_where) > 0 OR count($this->ar_like) > 0)
+      {
+        $sql .= "\nWHERE ";
+      }
+      $sql .= implode("\n", $this->ar_where);
 
+
+      if (count($this->ar_like) > 0)
+      {
+        if (count($this->ar_where) > 0)
+          $sql .= "\nAND ";
+
+        $sql .= implode("\n", $this->ar_like);
+      }
       if (count($this->ar_orderby) > 0)// check
       {
         $sql .= "\nORDER BY " . implode(', ', $this->ar_orderby);
@@ -299,6 +353,7 @@
         'ar_from'       => array(),
         'ar_join'       => array(),
         'ar_where'      => array(),
+        'ar_like'       => array(),
         'ar_orderby'    => array(),
         'ar_limit'      => FALSE,
         'ar_offset'     => FALSE,
