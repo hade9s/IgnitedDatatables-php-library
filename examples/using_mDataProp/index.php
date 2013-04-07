@@ -21,7 +21,7 @@ $(document).ready(function()
         { "mDataProp": "edit", 'bSortable': false },
         { "mDataProp": "delete" , 'bSortable': false},
         { "mDataProp": "first_name" },
-		    { "mDataProp": "last_name" },
+		{ "mDataProp": "last_name" },
         { "mDataProp": "email"},
        ],
 
