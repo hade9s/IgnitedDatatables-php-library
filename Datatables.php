@@ -167,7 +167,7 @@
     * @param string $match_replacement
     * @return mixed
     */
-    public function add_column($column, $content, $match_replacement = NULL)
+    public function add($column, $content, $match_replacement = NULL)
     {
       $this->add_columns[$column] = array('content' => $content, 'replacement' => $this->explode(',', $match_replacement));
       return $this;
@@ -181,7 +181,7 @@
     * @param string $match_replacement
     * @return mixed
     */
-    public function edit_column($column, $content, $match_replacement)
+    public function edit($column, $content, $match_replacement)
     {
       $this->edit_columns[$column][] = array('content' => $content, 'replacement' => $this->explode(',', $match_replacement));
       return $this;

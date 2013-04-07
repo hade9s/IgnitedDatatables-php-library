@@ -14,11 +14,11 @@ $datatables->connect($config);
 $datatables
 ->select('customer_id, first_name, last_name, email')
 ->from('customer')
-->add_column('edit', '<a href="#$1">Edit</a>', 'customer_id')
-->add_column('delete', '<a href="#$1">Delete</a>', 'customer_id')
-->edit_column('email', '$1', 'strtolower(email)') // php functions
-->edit_column('email', '$1', 'custom_email(email)')  // custom functions
-->edit_column('first_name', '$1', 'fix_first_name(first_name)');
+->add('edit', '<a href="#$1">Edit</a>', 'customer_id')
+->add('delete', '<a href="#$1">Delete</a>', 'customer_id')
+->edit('email', '$1', 'strtolower(email)') // php functions
+->edit('email', '$1', 'custom_email(email)')  // custom functions
+->edit('first_name', '$1', 'fix_first_name(first_name)');
 
 echo $datatables->generate();
 
