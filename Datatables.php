@@ -124,7 +124,7 @@
     */
     public function where($key_condition, $val = NULL, $backtick_protect = TRUE)
     {
-      $this->where['where'] = array($key_condition, $val, $backtick_protect);
+      $this->where[] = array($key_condition, $val, $backtick_protect);
       $this->ar->where($key_condition, $val, $backtick_protect);
       return $this;
     }
@@ -139,7 +139,7 @@
     */
     public function like($key_condition, $val = NULL, $backtick_protect = TRUE)
     {
-      $this->where['like'] = array($key_condition, $val, $backtick_protect);
+      $this->like[] = array($key_condition, $val, $backtick_protect);
       $this->ar->like($key_condition, $val, $backtick_protect);
       return $this;
     }
@@ -362,8 +362,9 @@
     *
     * @return integer
     */
-    private function get_total_results($filtering = FALSE)
+    public function get_total_results($filtering = FALSE)
     {
+
       if($filtering)
         $this->get_filtering();
 
@@ -371,7 +372,10 @@
         $this->ar->join($val[0], $val[1], $val[2]);
 
       foreach($this->where as $key => $val)
-        $this->ar->$key($val[0], $val[1], $val[2]);
+        $this->ar->where($val[0], $val[1], $val[2]);
+
+      foreach($this->like as $key => $val)
+        $this->ar->like($val[0], $val[1], $val[2]);
 
       return $this->ar->count_all_results($this->table);
     }
