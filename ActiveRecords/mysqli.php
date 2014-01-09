@@ -19,6 +19,7 @@
     var $ar_where       = array();
     var $ar_like        = array();
     var $ar_orderby     = array();
+    var $ar_groupby     = array();
     var $ar_limit       = FALSE;
     var $ar_offset      = FALSE;
     var $ar_order       = FALSE;
@@ -81,6 +82,20 @@
         $this->ar_from[] = $this->_protect_identifiers(trim($f));
 
       return $this;    
+    }
+
+    /**
+    * Generates a custom GROUP BY portion of the query
+    *
+    * @param string $val
+    * @return mixed
+    */
+    public function group_by($val)
+    {
+      foreach ($val as $v)
+        $this->ar_groupby[] = $this->_protect_identifiers(trim($v));
+
+      return $this;
     }
 
     /**
@@ -281,6 +296,8 @@
       }
       $sql .= implode("\n", $this->ar_where);
 
+      if (count($this->ar_groupby) > 0)
+        $sql .= "\nGROUP BY " . implode(', ', $this->ar_groupby);
 
       if (count($this->ar_like) > 0)
       {
@@ -355,6 +372,7 @@
         'ar_where'      => array(),
         'ar_like'       => array(),
         'ar_orderby'    => array(),
+        'ar_groupby'    => array(),
         'ar_limit'      => FALSE,
         'ar_offset'     => FALSE,
         'ar_order'      => FALSE    

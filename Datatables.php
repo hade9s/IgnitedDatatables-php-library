@@ -25,6 +25,7 @@
     *
     */
     private $table;
+    private $group          = array();
     private $select         = array();
     private $joins          = array();
     private $columns        = array();
@@ -96,6 +97,21 @@
     {
       $this->table = $table;
       $this->ar->from($this->explode(',', $table));
+      return $this;
+    }
+
+    /**
+    * Generates a custom GROUP BY portion of the query
+    *
+    * @param string $val
+    * @return mixed
+    */
+    public function group_by($val)
+    {
+      foreach($this->explode(',', $val) as $value)
+        $this->group[] = $value;
+
+      $this->ar->group_by($this->explode(',', $val));
       return $this;
     }
 
@@ -373,6 +389,9 @@
 
       foreach($this->where as $key => $val)
         $this->ar->where($val[0], $val[1], $val[2]);
+
+      foreach($this->group as $val)
+        $this->ar->group_by($val);
 
       foreach($this->like as $key => $val)
         $this->ar->like($val[0], $val[1], $val[2]);
