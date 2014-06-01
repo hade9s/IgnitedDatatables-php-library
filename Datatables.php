@@ -26,6 +26,7 @@
     */
     private $table;
     private $group          = array();
+    private $order          = array();
     private $select         = array();
     private $joins          = array();
     private $columns        = array();
@@ -110,8 +111,19 @@
     {
       foreach($this->explode(',', $val) as $value)
         $this->group[] = $value;
-
       $this->ar->group_by($this->explode(',', $val));
+      return $this;
+    }
+
+    /**
+    * Generates the ORDER BY portion of the query
+    *
+    */
+    public function order_by($orderby, $direction = '')
+    {
+      $this->order[] = $orderby;
+      $direction = (in_array(strtoupper(trim($direction)), array('ASC', 'DESC'), TRUE))? ' '.$direction : ' ASC';
+      $this->ar->order_by($orderby,$direction);
       return $this;
     }
 
